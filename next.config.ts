@@ -1,8 +1,9 @@
-const CopyPlugin = require("copy-webpack-plugin");
+import CopyPlugin from "copy-webpack-plugin";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack(config, { isServer }) {
+  webpack(config: import('webpack').Configuration, { isServer }: { isServer: boolean }) {
+    config.plugins = config.plugins || [];
     config.plugins.push(
       new CopyPlugin({
         patterns: [
@@ -15,6 +16,7 @@ const nextConfig = {
     );
 
     if (!isServer) {
+      config.resolve = config.resolve || {};
       config.resolve.fallback = {
         fs: false,
       };

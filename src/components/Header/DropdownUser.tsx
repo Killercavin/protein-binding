@@ -27,16 +27,16 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {user.firstName} {user.lastName}
+            {user ? `${user.firstName} ${user.lastName}` : "Guest"}
           </span>
-          <span className="block text-xs">{user.jobTitle}</span>
+          <span className="block text-xs">{user ? user.jobTitle : ""}</span>
         </span>
 
         <span className="h-11 w-11 rounded-full">
           <Image
             width={80}
             height={80}
-            src={user.photo}
+            src={user?.photo || "/default-avatar.png"}
             className="rounded-full"
             style={{
               width: "auto",

@@ -1,6 +1,7 @@
 "use client";
 import "jsvectormap/dist/jsvectormap.css";
 import "flatpickr/dist/flatpickr.min.css";
+// import "flatpickr/dist/themes/light.css"; // Alternative theme import
 import "@/css/style.css";
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
@@ -23,11 +24,11 @@ export default function RootLayout({
   }, []);
 
   const client = new Ably.Realtime({
-    key: "xiEQTw.SBJKWA:Kv7RDv6PngxN8y8ttHsOWHDQqchaEYtU9rgKefhsl7o",
+    key: `${process.env.NEXT_PUBLIC_ABLY_API_KEY}`,
   });
   return (
     <html lang="en">
-      {/* <script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script> */}
+      {/* <Script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js" strategy="afterInteractive" /> */}
       <Script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js" strategy="afterInteractive" />
       <body suppressHydrationWarning={true}>
         <SessionProvider>
