@@ -1,11 +1,29 @@
 "use client";
 import { useUser } from "@/app/context/UserContext";
+import { useState, useEffect } from "react";
 // import { ApexOptions } from "apexcharts";
 import Image from "next/image";
 import React from "react";
 // import ReactApexChart from "react-apexcharts";
 const ChartThree: React.FC = () => {
   const user = useUser();
+
+  const [time, setTime] = useState<string>("");
+
+  useEffect(() => {
+    const pad = (num: number) => num.toString().padStart(2, '0'); // Pad with leading zero
+
+    const updateTime = () => {
+      const now = new Date();
+      const formattedTime = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      setTime(formattedTime);
+    };
+
+    updateTime(); // Initialize immediately
+    const interval = setInterval(updateTime, 1000);
+
+    return () => clearInterval(interval); // Cleanup
+  }, []);
 
   return (
     <div className="col-span-12 rounded-lg border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-[#181818] dark:bg-[#181818] sm:px-7.5 xl:col-span-5">
@@ -38,7 +56,7 @@ const ChartThree: React.FC = () => {
                       {user.firstName}{" "}
                     </span>
                     <span className="text-gray-500 dark:text-gray-400 text-sm font-normal">
-                      11:46
+                      {time}
                     </span>
                   </div>
                   <p className="text-gray-900 py-2.5 text-sm font-normal dark:text-white">
