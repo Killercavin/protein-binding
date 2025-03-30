@@ -13,12 +13,12 @@ import { getUserByEmail } from "@/lib/actions/user.actions";
 const ModalLayout = () => {
   const { data: session } = useSession();
   const [smiles, setSmiles] = useState(
-    "CCN(CC)C(=O)[C@@]1(C)Nc2c(ccc3ccccc23)C[C@H]1N(C)C",
+    "",
   );
-  const [numMolecules, setNumMolecules] = useState("10");
-  const [minSimilarity, setMinSimilarity] = useState("0.3");
-  const [particles, setParticles] = useState("30");
-  const [iterations, setIterations] = useState("10");
+  const [numMolecules, setNumMolecules] = useState(0);
+  const [minSimilarity, setMinSimilarity] = useState(0);
+  const [particles, setParticles] = useState(0);
+  const [iterations, setIterations] = useState(0);
   type Molecule = {
     structure: string;
     score: number;
@@ -51,12 +51,7 @@ const ModalLayout = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-
-    const API_KEY = `${process.env.NEXT_PUBLIC_NVIDIA_API_KEY}`;    
-
-    const invokeUrl =
-      "https://health.api.nvidia.com/v1/biology/nvidia/molmim/generate";
-
+  
     const payload = {
       algorithm: "CMA-ES",
       num_molecules: parseInt(numMolecules),
@@ -67,31 +62,35 @@ const ModalLayout = () => {
       iterations: parseInt(iterations),
       smi: smiles,
     };
-
+  
     try {
-      const response = await fetch(invokeUrl, {
+      // Call the backend proxy instead of NVIDIA API directly
+      const response = await fetch("/api/proxy", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${API_KEY}`,
-          Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
-
+  
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+  
       const data = await response.json();
+  
       type Molecule = {
         sample: string;
         score: number;
       };
-
+  
       const generatedMolecules = JSON.parse(data.molecules).map((mol: Molecule) => ({
         structure: mol.sample,
         score: mol.score,
       }));
-
+  
       setMolecules(generatedMolecules);
-
+  
       if (userId) {
         await createMoleculeGenerationHistory(
           {
@@ -102,22 +101,22 @@ const ModalLayout = () => {
             iterations: parseInt(iterations),
             generatedMolecules,
           },
-          userId,
+          userId
         );
-
+  
         const updatedHistory = await getMoleculeGenerationHistoryByUser(userId);
         setHistory(updatedHistory);
       } else {
         console.error("User ID is not available.");
       }
-
+  
       console.log(generatedMolecules);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <DefaultLayout>
