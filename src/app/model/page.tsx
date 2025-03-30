@@ -15,10 +15,10 @@ const ModalLayout = () => {
   const [smiles, setSmiles] = useState(
     "",
   );
-  const [numMolecules, setNumMolecules] = useState("");
-  const [minSimilarity, setMinSimilarity] = useState("");
-  const [particles, setParticles] = useState("");
-  const [iterations, setIterations] = useState("");
+  const [numMolecules, setNumMolecules] = useState(0);
+  const [minSimilarity, setMinSimilarity] = useState(0);
+  const [particles, setParticles] = useState(0);
+  const [iterations, setIterations] = useState(0);
   type Molecule = {
     structure: string;
     score: number;
