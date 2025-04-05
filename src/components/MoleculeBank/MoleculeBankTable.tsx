@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MoleculeStructure from "../MoleculeStructure/index";
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // Replace with your key
+const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY; // Replace with your key
 
 const defaultMolecules = ["Aspirin", "Caffeine", "Glucose", "Ethanol", "Butene", "Morphine", "Penicillin"]; // Default set
 

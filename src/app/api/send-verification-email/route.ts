@@ -2,7 +2,7 @@
 
 import { VerifyEmailTemplate } from "@/components/EmailTemplates/verify-email";
 import { Resend } from "resend";
-const resend = new Resend(process.env.RESEND_KEY);
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
 export async function POST(request: Request) {
   const { firstName, email, verificationUrl } = await request.json();
