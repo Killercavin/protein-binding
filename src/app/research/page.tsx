@@ -41,7 +41,6 @@ const DEFAULT_COMPOUNDS = [
   "anandamide"
 ];
 
-
 // Dynamically import MoleculeStructure to avoid unnecessary client-side loading
 const MoleculeStructure = dynamic(() => import("@/components/MoleculeStructure"), { ssr: false });
 
